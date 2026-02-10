@@ -38,8 +38,8 @@ pipeline {
             }
             steps {
                 echo '🧪 Exécution des tests dans le conteneur Node...'
-                sh 'npm install' [cite: 6]
-                sh 'npm test' [cite: 7]
+                sh 'npm install'
+                sh 'npm test'
             }
         }
         
