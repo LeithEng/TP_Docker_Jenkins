@@ -26,26 +26,20 @@ pipeline {
         // STAGE 2 : UNIT TESTS - Exécution des tests
         // ==========================================
         stage('Unit Tests') {
-            steps {
-                echo '🧪 Exécution des tests unitaires...'
-                script {
-                    // Exemple pour Node.js (adapter selon votre langage)
-                    // Pour Node.js :
-                    sh '''
-                        npm install
-                        npm test
-                    '''
-                    
-                    // Pour Java/Maven :
-                    // sh 'mvn clean test'
-                    
-                    // Pour Python :
-                    // sh '''
-                    //     pip install -r requirements.txt
-                    //     pytest tests/
-                    // '''
+            /* On utilise l'agent Docker spécifiquement pour ce stage.
+               Jenkins va lancer un conteneur 'node:18-alpine', y monter votre code,
+               et exécuter les commandes à l'intérieur.
+            */
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    args '-u root' // Optionnel : utile si vous avez des problèmes de permissions
                 }
-                echo '✅ Tests unitaires réussis'
+            }
+            steps {
+                echo '🧪 Exécution des tests dans le conteneur Node...'
+                sh 'npm install' [cite: 6]
+                sh 'npm test' [cite: 7]
             }
         }
         
